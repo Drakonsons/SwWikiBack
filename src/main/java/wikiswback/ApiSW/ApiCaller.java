@@ -1,52 +1,55 @@
 package wikiswback.ApiSW;
 
-import jakarta.json.JsonObject;
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.stereotype.Component;
 
-import java.io.InputStream;
-import java.io.StringReader;
-import java.nio.charset.StandardCharsets;
-
-import static jakarta.json.Json.createReader;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 @Component
 public class ApiCaller {
 
-    public JsonObject getBuilder(String path, String searchQuery) throws Exception {
-        HttpGet httpGet;
-        if (searchQuery == null) {
-            httpGet = new HttpGet("https://swapi.dev/api/" + path + "/");
-        } else {
-            httpGet = new HttpGet("https://swapi.dev/api/" + path + "/?search=" + searchQuery);
+
+    public String getBuilder(String path, String searchQuery) throws Exception {
+
+        StringBuilder response = new StringBuilder();
+
+        URL url;
+        try {
+            if (searchQuery == null) {
+                url = new URL("https://swapi.dev/api/" + path + "/"); // on crée l'url
+            } else {
+                url = new URL("https://swapi.dev/api/" + path + "/?search=" + searchQuery); // on crée l'url avec la recherche
+            }
+
+
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection(); // ouverture de la connexion
+
+            connection.setRequestProperty("Accept", "application/json"); // on précise qu'on veut du json
+            connection.setRequestMethod("GET"); // on précise qu'on veut faire un get
+
+            int responseCode = connection.getResponseCode(); // on récupère le code de la réponse
+
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String inputLine; // on va lire la réponse ligne par ligne
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine); // on ajoute chaque ligne à la réponse
+                }
+
+                in.close();
+            } else {
+                response.append("La requête a échoué avec le code : ").append(responseCode); // on ajoute le code de la réponse à la réponse
+            }
+
+            connection.disconnect(); // on ferme la connexion
+
+        } catch (Exception e) {
+            e.printStackTrace(); // on affiche l'erreur
         }
-        return getRequest(httpGet);
-    }
 
-    public JsonObject getRequest(HttpGet getRequest) throws Exception {
-        HttpClient httpClient = HttpClientBuilder.create().build();
-        getRequest.addHeader("accept", "application/json");
-        HttpResponse response = httpClient.execute(getRequest);
-
-        if (response.getStatusLine().getStatusCode() != 200) {
-            throw new RuntimeException("Failed: HTTP error code: " + response.getStatusLine().getStatusCode());
-        }
-
-        try (InputStream contentStream = response.getEntity().getContent()) {
-            String json = IOUtils.toString(contentStream, StandardCharsets.UTF_8);
-            return deserialize(json);
-        }
-    }
-
-    public JsonObject deserialize(String json) {
-        return createReader(new StringReader(json)).readObject();
-    }
-
-    public JsonObject innerRequest(String uri) throws Exception {
-        return getRequest(new HttpGet(uri));
+        return response.toString(); // on retourne la réponse
     }
 }
