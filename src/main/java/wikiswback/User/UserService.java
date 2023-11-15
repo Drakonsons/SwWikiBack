@@ -3,6 +3,7 @@ package wikiswback.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import wikiswback.exception.UserAlreadyExistsException;
 
 import java.util.List;
 
@@ -19,7 +20,6 @@ public class UserService {
     }
 
     public UserEntity getUserById(Long id) {
-
         return userRepository.findById(id).orElseThrow();
     }
 

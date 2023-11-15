@@ -30,11 +30,7 @@ public class UserController {
         return userService.getUserById(id);
     }
 
-    @PostMapping("/register")
-    UserEntity createUser(@RequestBody UserEntity user) {
 
-        return userService.createUser(user);
-    }
 
     @PatchMapping("/{id}")
     UserEntity updateUser(@PathVariable Long id, @RequestBody UserEntity user) {
@@ -48,32 +44,7 @@ public class UserController {
         userService.deleteUser(id);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity login(@RequestBody UserEntity user) {
-        UserEntity userEntity = userRepository.findByUsername(user.getUsername()).orElseThrow();
 
-        HashMap<String,Object> response = new HashMap<>();
-        try{
-            String token= jwtUtil.generateToken(userEntity);
-            response.put("token",token);
-            response.put("user",userEntity);
-            return new ResponseEntity(response,HttpStatus.OK);
-        } catch (Exception e) {
-            System.out.println("Login failed");
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-       /* if (userEntity.getPassword().equals(passwordEncoder().encode(user.getPassword()))) {
-            System.out.println("Login successful");
-            return new ResponseEntity<>(userEntity, HttpStatus.OK);
-        } else {
-            System.out.println("Login failed");
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }*/
-    }
-
-    private BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
 
 }

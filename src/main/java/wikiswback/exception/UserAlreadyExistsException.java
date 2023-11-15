@@ -1,4 +1,4 @@
-package wikiswback.User;
+package wikiswback.exception;
 
 import lombok.Getter;
 

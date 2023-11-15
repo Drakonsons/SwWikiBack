@@ -11,7 +11,7 @@ public class KeyService {
 
     public Key getKey() {
 
-        byte[] keyBytes = Decoders.BASE64.decode("L3C0d3Sup3rS3cr3tSup3rDur");
+        byte[] keyBytes = Decoders.BASE64.decode("SECRETKEYquiEstSuperLongSaGrandJeTeLeDisMoiMonAmi");
 
         return Keys.hmacShaKeyFor(keyBytes);
 

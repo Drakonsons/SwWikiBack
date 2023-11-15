@@ -24,6 +24,6 @@ public class UserEntity {
     private String email;
 
     public String getRole() {
-        return "USER";
+        return "ROLE_USER";
     }
 }
