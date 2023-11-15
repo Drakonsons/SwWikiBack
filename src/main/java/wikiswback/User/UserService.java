@@ -1,6 +1,7 @@
 package wikiswback.User;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,23 +15,45 @@ public class UserService {
 
 
     public List<UserEntity> getAllUsers() {
-
         return userRepository.findAll();
     }
 
     public UserEntity getUserById(Long id) {
+
         return userRepository.findById(id).orElseThrow();
     }
 
     public UserEntity createUser(UserEntity user) {
+
+
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            throw new UserAlreadyExistsException(user.getUsername(), user.getEmail());
+        }
+
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new UserAlreadyExistsException(user.getUsername(), user.getEmail());
+        }
+
+        user.setPassword(passwordEncoder().encode(user.getPassword()));
         return userRepository.save(user);
     }
 
     public UserEntity updateUser(Long id, UserEntity user) {
+
         return userRepository.save(user);
     }
 
     public void deleteUser(Long id) {
+
         userRepository.deleteById(id);
     }
+
+    public UserEntity login(UserEntity user) {
+        UserEntity user1 = userRepository.findByUsername(user.getUsername()).orElseThrow();
+        return user;
+    }
+    private BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
 }

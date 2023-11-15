@@ -1,9 +1,13 @@
 package wikiswback.ApiSW;
 
+
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+import wikiswback.User.UserEntity;
 
 @RestController
 @RequestMapping("/api")
@@ -19,7 +23,7 @@ public class ApiController {
 
     @GetMapping("/people")
     public String apiCallPeople() throws Exception {
-       return apiCaller.getBuilder("people", "C-3PO");
+       return apiCaller.getBuilder("people", null);
     }
 
     @GetMapping("/planets")
@@ -34,7 +38,7 @@ public class ApiController {
 
     @GetMapping("/starships")
     public String apiCallStarships() throws Exception {
-        return apiCaller.getBuilder("starships", "x-wing");
+        return apiCaller.getBuilder("starships", null);
     }
 
     @GetMapping("/vehicles")

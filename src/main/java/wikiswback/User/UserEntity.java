@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+
 @Entity
 @Getter
 @Setter
@@ -22,4 +23,7 @@ public class UserEntity {
     private String password;
     private String email;
 
+    public String getRole() {
+        return "USER";
+    }
 }
