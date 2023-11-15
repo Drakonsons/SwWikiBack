@@ -49,7 +49,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserEntity> login(@RequestBody UserEntity user) {
+    public ResponseEntity login(@RequestBody UserEntity user) {
         UserEntity userEntity = userRepository.findByUsername(user.getUsername()).orElseThrow();
 
         HashMap<String,Object> response = new HashMap<>();

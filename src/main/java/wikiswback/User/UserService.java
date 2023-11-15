@@ -48,10 +48,6 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public UserEntity login(UserEntity user) {
-        UserEntity user1 = userRepository.findByUsername(user.getUsername()).orElseThrow();
-        return user;
-    }
     private BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
