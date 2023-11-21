@@ -34,9 +34,9 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).ignoringRequestMatchers("").disable())
 
             .authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/auth/register", "/auth/login")
+                .requestMatchers("/auth/register", "/auth/login","/api/**")
                 .permitAll()
-                .requestMatchers("/api/**", "/users/{id}")
+                .requestMatchers( "/users/{id}")
                 .hasAnyRole("USER")
                 .anyRequest()
                     .authenticated()

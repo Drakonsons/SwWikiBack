@@ -37,6 +37,8 @@ public class AuthController {
         try{
             auhtService.login(authRequest); // check si le username existe, et s'il existe, récupérer l'objet USER en DB // et s'il est récupéré, comparer les MPD
 
+
+
             String token = jwtUtil.generateToken(authRequest);
             response.put("token",token);
             response.put("Request", "User logged in");

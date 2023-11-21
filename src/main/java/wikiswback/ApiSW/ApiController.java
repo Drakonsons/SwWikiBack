@@ -46,4 +46,34 @@ public class ApiController {
         return apiCaller.getBuilder("vehicles", null);
     }
 
+    @GetMapping("/films/{id}")
+    public String apiCallFilmsId(@PathVariable String id) throws Exception {
+        return apiCaller.getBuilder("films", id);
+    }
+
+    @GetMapping("/people/{id}")
+    public String apiCallPeopleId(@PathVariable String id) throws Exception {
+        return apiCaller.getBuilder("people", id);
+    }
+
+    @GetMapping("/planets/{id}")
+    public String apiCallPlanetsId(@PathVariable String id) throws Exception {
+        return apiCaller.getBuilder("planets", id);
+    }
+
+    @GetMapping("/species/{id}")
+    public String apiCallSpeciesId(@PathVariable String id) throws Exception {
+        return apiCaller.getBuilder("species", id);
+    }
+
+    @GetMapping("/starships/{id}")
+    public String apiCallStarshipsId(@PathVariable String id) throws Exception {
+        return apiCaller.getBuilder("starships", id);
+    }
+
+    @GetMapping("/vehicles/{id}")
+    public String apiCallVehiclesId(@PathVariable String id) throws Exception {
+        return apiCaller.getBuilder("vehicles", id);
+    }
+
 }
